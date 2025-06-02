@@ -1,124 +1,90 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { Heart, Music, Volume2, VolumeX, LogOut } from "lucide-react";
+import { Heart, LogOut } from "lucide-react";
 import MemoryCard from "./MemoryCard";
 import MusicPlayer from "./MusicPlayer";
+
+import img1 from "../public/photos/img1.png";
+import img2 from "../public/photos/img2.png";
+import img7 from "../public/photos/img7.png";
+import img4 from "../public/photos/img4.png";
+import img5 from "../public/photos/img5.png";
+import img6 from "../public/photos/img6.png";
 
 // Replace these with your actual content
 const memories = [
   {
     id: 1,
-    title: "Our First Date",
+    title: "Taswiret fiancaille mtaaena",
     date: "January 15, 2023",
     description:
       "I'll never forget the way you laughed when I spilled my coffee. That's when I knew you were special.",
-    image:
-      "https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    image: img1,
   },
   {
     id: 2,
-    title: "Beach Sunset",
+    title: "Taswira fi karhbtna",
     date: "March 22, 2023",
     description:
       "Walking along the shore, hand in hand, watching the sun paint the sky in colors that reminded me of your smile.",
-    image:
-      "https://images.pexels.com/photos/1024992/pexels-photo-1024992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    image: img2,
   },
   {
     id: 3,
-    title: "Stargazing Night",
+    title: "Awel 3id milad lik",
     date: "May 10, 2023",
     description:
       "Under the vast sky filled with countless stars, I found myself lost in your eyes instead.",
-    image:
-      "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    image: img7,
   },
   {
     id: 4,
-    title: "Mountain Hike",
+    title: "Tacos Date",
     date: "July 5, 2023",
     description:
       "The view from the top was breathtaking, but not as breathtaking as having you by my side through every step of the journey.",
-    image:
-      "https://images.pexels.com/photos/1586298/pexels-photo-1586298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    image: img4,
   },
   {
     id: 5,
-    title: "Cozy Rainy Day",
+    title: "Baaed petit dej",
     date: "September 18, 2023",
     description:
       "Wrapped in blankets, sipping hot chocolate, watching the raindrops race down the window. Perfect days are the ones spent with you.",
-    image:
-      "https://images.pexels.com/photos/1828875/pexels-photo-1828875.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    image: img5,
   },
   {
     id: 6,
-    title: "Christmas Lights",
+    title: "A7la taswira lina",
     date: "December 24, 2023",
     description:
       "The holiday lights sparkled in your eyes. In that moment, I wished for nothing more than a lifetime of Christmases with you.",
-    image:
-      "https://images.pexels.com/photos/1661905/pexels-photo-1661905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    image: img6,
   },
 ];
 
 // Replace with your actual love letter content
 const loveLetter = `
-My dearest love,
+Maloukti,
 
-From the moment you entered my life, everything changed. Colors became brighter, music sounded sweeter, and my heart found its home. Every day with you is a gift that I cherish deeply.
+Maloukti , ena nhebek w nheb nhebek w habit el nhar ali habitek fih w bech neb9a nhebk, taadina b barcha hajat s3iba fel relation mtaaena w maa baadhna dima n7awlo nokhrjo menhom , aadina barcha lebaadhna w dima noghzro el 9odem. 
 
-You've taught me what it means to truly love someone - to see them for who they are, to accept them completely, and to grow together through life's journey. Your smile is my favorite sight, your laugh is my favorite sound, and your heart is my favorite place to call home.
+noghzro lel objectif mtaaena ali howa ana wayek n9omo sbeh aala sout baadhna wala 7es baadhna , w hadha maykhali kan el 7ob mtaaena yzid , ana makontech naaerf chmaanaha 7ob , makontech naaerf chmaanaha este9rar , makontech nkhamem kima taw nkhamem
 
-This digital space is filled with some of our most precious memories, but they're just a small fraction of the countless beautiful moments we've shared. I created this for you as a reminder of our love story - a story that continues to unfold with each passing day.
+Maaek nti tbadelt w badelt men rouhi baaaaaaaaaarcha zada rien que bech nouslo lel objectif eli 9otlk aaliha , wana ferhan bel changement hadha wana ferhan bel changement eli nti sarlek wali ana jrit aalih hhh ! w nhebek tziiiid tetbadel .
 
-I love you more than words can express, and I'm grateful for every moment we spend together. Thank you for being you, and for choosing to share your life with me.
+Aaaemlt el site hadha w 7atitholk fi nawara bech nfar7ek bih w inchalah tefrah bih baz rak tetbasem , nheb n9olek mahlek winti tedhhak w ma7la tabsmitek zada .
+
+Nhebek 
 
 Forever yours,
-[Your Name]
+Nasssssssri
 `;
 
 const RomanticContent: React.FC = () => {
   const { logout } = useAuth();
-  const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const [showLetter, setShowLetter] = useState(false);
-  const observerRef = useRef<IntersectionObserver | null>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.3,
-    };
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = Number(entry.target.getAttribute("data-id"));
-          if (!visibleCards.includes(id)) {
-            setVisibleCards((prev) => [...prev, id]);
-          }
-        }
-      });
-    }, options);
-
-    // Observe all cards
-    cardsRef.current.forEach((card) => {
-      if (card) observerRef.current?.observe(card);
-    });
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, [cardsRef.current.length]);
-
-  useEffect(() => {
-    // Set first card visible immediately
-    setTimeout(() => {
-      setVisibleCards([1]);
-    }, 500);
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-100 to-pink-200">
@@ -199,9 +165,7 @@ const RomanticContent: React.FC = () => {
                 key={memory.id}
                 ref={(el) => (cardsRef.current[index] = el)}
                 data-id={memory.id}
-                className={`memory-card ${
-                  visibleCards.includes(memory.id) ? "visible" : ""
-                }`}
+                className={`memory-card visible`}
               >
                 <MemoryCard memory={memory} />
               </div>
