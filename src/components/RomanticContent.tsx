@@ -11,6 +11,7 @@ import img4 from "../public/photos/img4.png";
 import img5 from "../public/photos/img5.png";
 import img6 from "../public/photos/img6.png";
 import takharoj from "../public/photos/takharoj.png";
+import badira_pic_1 from "../public/photos/badira_pic_1.png";
 
 // Replace these with your actual content
 const memories = [
@@ -69,6 +70,14 @@ const memories = [
     description:
       "The holiday lights sparkled in your eyes. In that moment, I wished for nothing more than a lifetime of Christmases with you.",
     image: takharoj,
+  },
+  {
+    id: 8,
+    title: "Awel machia lel badira",
+    date: "Septembre 3, 2022",
+    description:
+      "The holiday lights sparkled in your eyes. In that moment, I wished for nothing more than a lifetime of Christmases with you.",
+    image: badira_pic_1,
   },
 ];
 
